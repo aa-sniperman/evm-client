@@ -4,3 +4,4 @@
 export { Meme__factory } from "./Meme__factory";
 export { MemeA8__factory } from "./MemeA8__factory";
 export { MemeFactory__factory } from "./MemeFactory__factory";
+export { SingletonFactory__factory } from "./SingletonFactory__factory";

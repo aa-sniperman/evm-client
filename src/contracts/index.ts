@@ -4,7 +4,9 @@
 export type { Meme } from "./Meme";
 export type { MemeA8 } from "./MemeA8";
 export type { MemeFactory } from "./MemeFactory";
+export type { SingletonFactory } from "./SingletonFactory";
 export * as factories from "./factories";
 export { Meme__factory } from "./factories/Meme__factory";
 export { MemeA8__factory } from "./factories/MemeA8__factory";
 export { MemeFactory__factory } from "./factories/MemeFactory__factory";
+export { SingletonFactory__factory } from "./factories/SingletonFactory__factory";

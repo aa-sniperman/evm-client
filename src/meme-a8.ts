@@ -1,5 +1,6 @@
-import { Wallet } from "ethers";
+import { ethers, getAddress, keccak256, solidityPacked, solidityPackedKeccak256, Wallet } from "ethers";
 import { MemeA8__factory } from "./contracts";
+import { PROVIDER } from "./config";
 
 export namespace MemeA8 {
     export async function buy(
@@ -37,5 +38,50 @@ export namespace MemeA8 {
         )
         await tx.wait();
         console.log(tx.hash)
+    }
+
+    export interface WhitelistPayloadData {
+        id: bigint,
+        tokenAddress: string,
+        walletAddress: string,
+        tokenAllocation: bigint,
+        expiredBlockNumber: bigint
+    }
+    export async function signWhitelist(
+        {
+            id,
+            tokenAddress,
+            walletAddress,
+            tokenAllocation,
+            expiredBlockNumber
+        }: WhitelistPayloadData
+    ) {
+        const pk = process.env.SIGNER_PK as string;
+        const adminWallet = new Wallet(pk, PROVIDER);
+        console.log(adminWallet.address);
+
+        const msgHash = keccak256(solidityPacked(
+            [
+                'uint256',
+                'address',
+                'address',
+                'uint256',
+                'uint256'
+            ],
+            [
+                id,
+                getAddress(tokenAddress),
+                getAddress(walletAddress),
+                tokenAllocation,
+                expiredBlockNumber
+            ],
+        ));
+
+        console.log(msgHash);
+
+        const signature = await adminWallet.signMessage(ethers.getBytes(msgHash));
+
+        return signature;
+
     }
 }
