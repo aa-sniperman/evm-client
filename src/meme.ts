@@ -33,8 +33,6 @@ export namespace Meme {
 
     export async function getMemeInfo(token: string) {
         const sc = Meme__factory.connect(token, PROVIDER);
-        const reserve = await sc.reserveToken();
-        console.log(reserve);
         const symbol = await sc.symbol();
         console.log(symbol);
     }

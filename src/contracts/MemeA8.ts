@@ -29,7 +29,7 @@ export interface MemeA8Interface extends Interface {
       | "BASIS_POINTS"
       | "MAX_TOKENS"
       | "UNIV2_FACTORY"
-      | "WETH"
+      | "_swapExactOut"
       | "allowance"
       | "approve"
       | "balanceOf"
@@ -39,10 +39,13 @@ export interface MemeA8Interface extends Interface {
       | "decimals"
       | "decreaseAllowance"
       | "factory"
+      | "idUsed"
       | "increaseAllowance"
+      | "initialBuy"
       | "initialize"
       | "initializeWithoutLaunching"
       | "name"
+      | "native"
       | "nativeOffset"
       | "owner"
       | "quoteAmountIn"
@@ -51,6 +54,7 @@ export interface MemeA8Interface extends Interface {
       | "reserveNative"
       | "reserveToken"
       | "saleAmount"
+      | "signerAddress"
       | "supportsInterface"
       | "swapExactIn"
       | "swapExactOut"
@@ -62,7 +66,8 @@ export interface MemeA8Interface extends Interface {
       | "transferOwnership"
       | "uniswapPair"
       | "version"
-      | "withdraw"
+      | "whitelistBuyExactIn"
+      | "whitelistBuyExactOut"
   ): FunctionFragment;
 
   getEvent(
@@ -76,6 +81,7 @@ export interface MemeA8Interface extends Interface {
       | "OwnershipTransferred"
       | "Sell"
       | "Transfer"
+      | "WhitelistBuy"
   ): EventFragment;
 
   encodeFunctionData(
@@ -90,7 +96,10 @@ export interface MemeA8Interface extends Interface {
     functionFragment: "UNIV2_FACTORY",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "_swapExactOut",
+    values: [BigNumberish, BigNumberish, boolean, AddressLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [AddressLike, AddressLike]
@@ -119,8 +128,16 @@ export interface MemeA8Interface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "factory", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "idUsed",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "increaseAllowance",
     values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "initialBuy",
+    values: [BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
@@ -133,6 +150,7 @@ export interface MemeA8Interface extends Interface {
       BigNumberish,
       BigNumberish,
       BigNumberish,
+      BigNumberish,
       BigNumberish
     ]
   ): string;
@@ -141,6 +159,7 @@ export interface MemeA8Interface extends Interface {
     values: [string, string]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(functionFragment: "native", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "nativeOffset",
     values?: undefined
@@ -168,6 +187,10 @@ export interface MemeA8Interface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "saleAmount",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "signerAddress",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -208,7 +231,32 @@ export interface MemeA8Interface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "version", values?: undefined): string;
-  encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "whitelistBuyExactIn",
+    values: [
+      BigNumberish,
+      BigNumberish,
+      boolean,
+      AddressLike,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BytesLike
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "whitelistBuyExactOut",
+    values: [
+      BigNumberish,
+      BigNumberish,
+      boolean,
+      AddressLike,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BytesLike
+    ]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "BASIS_POINTS",
@@ -219,7 +267,10 @@ export interface MemeA8Interface extends Interface {
     functionFragment: "UNIV2_FACTORY",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "_swapExactOut",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -238,16 +289,19 @@ export interface MemeA8Interface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "factory", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "idUsed", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "increaseAllowance",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "initialBuy", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "initializeWithoutLaunching",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "native", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "nativeOffset",
     data: BytesLike
@@ -274,6 +328,10 @@ export interface MemeA8Interface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "saleAmount", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "signerAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
@@ -309,7 +367,14 @@ export interface MemeA8Interface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "whitelistBuyExactIn",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "whitelistBuyExactOut",
+    data: BytesLike
+  ): Result;
 }
 
 export namespace ApprovalEvent {
@@ -487,6 +552,19 @@ export namespace TransferEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
+export namespace WhitelistBuyEvent {
+  export type InputTuple = [id: BigNumberish, amountBought: BigNumberish];
+  export type OutputTuple = [id: bigint, amountBought: bigint];
+  export interface OutputObject {
+    id: bigint;
+    amountBought: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
 export interface MemeA8 extends BaseContract {
   connect(runner?: ContractRunner | null): MemeA8;
   waitForDeployment(): Promise<this>;
@@ -536,7 +614,16 @@ export interface MemeA8 extends BaseContract {
 
   UNIV2_FACTORY: TypedContractMethod<[], [string], "view">;
 
-  WETH: TypedContractMethod<[], [string], "view">;
+  _swapExactOut: TypedContractMethod<
+    [
+      amountOut: BigNumberish,
+      maximumPay: BigNumberish,
+      isBuyToken: boolean,
+      recipient: AddressLike
+    ],
+    [bigint],
+    "nonpayable"
+  >;
 
   allowance: TypedContractMethod<
     [owner: AddressLike, spender: AddressLike],
@@ -576,9 +663,17 @@ export interface MemeA8 extends BaseContract {
 
   factory: TypedContractMethod<[], [string], "view">;
 
+  idUsed: TypedContractMethod<[arg0: BigNumberish], [boolean], "view">;
+
   increaseAllowance: TypedContractMethod<
     [spender: AddressLike, addedValue: BigNumberish],
     [boolean],
+    "nonpayable"
+  >;
+
+  initialBuy: TypedContractMethod<
+    [amountIn: BigNumberish, recipient: AddressLike],
+    [bigint],
     "nonpayable"
   >;
 
@@ -588,11 +683,12 @@ export interface MemeA8 extends BaseContract {
       _symbol: string,
       _creator: AddressLike,
       _univ2Factory: AddressLike,
-      _weth: AddressLike,
+      _native: AddressLike,
       _totalSupply: BigNumberish,
       _saleAmount: BigNumberish,
       _tokenOffset: BigNumberish,
-      _nativeOffset: BigNumberish
+      _nativeOffset: BigNumberish,
+      _whitelistEndTs: BigNumberish
     ],
     [void],
     "nonpayable"
@@ -605,6 +701,8 @@ export interface MemeA8 extends BaseContract {
   >;
 
   name: TypedContractMethod<[], [string], "view">;
+
+  native: TypedContractMethod<[], [string], "view">;
 
   nativeOffset: TypedContractMethod<[], [bigint], "view">;
 
@@ -643,6 +741,8 @@ export interface MemeA8 extends BaseContract {
 
   saleAmount: TypedContractMethod<[], [bigint], "view">;
 
+  signerAddress: TypedContractMethod<[], [string], "view">;
+
   supportsInterface: TypedContractMethod<
     [_interfaceId: BytesLike],
     [boolean],
@@ -657,7 +757,7 @@ export interface MemeA8 extends BaseContract {
       recipient: AddressLike
     ],
     [bigint],
-    "payable"
+    "nonpayable"
   >;
 
   swapExactOut: TypedContractMethod<
@@ -668,7 +768,7 @@ export interface MemeA8 extends BaseContract {
       recipient: AddressLike
     ],
     [bigint],
-    "payable"
+    "nonpayable"
   >;
 
   symbol: TypedContractMethod<[], [string], "view">;
@@ -699,7 +799,35 @@ export interface MemeA8 extends BaseContract {
 
   version: TypedContractMethod<[], [string], "view">;
 
-  withdraw: TypedContractMethod<[], [void], "nonpayable">;
+  whitelistBuyExactIn: TypedContractMethod<
+    [
+      amountIn: BigNumberish,
+      minimumReceive: BigNumberish,
+      isBuyToken: boolean,
+      recipient: AddressLike,
+      id: BigNumberish,
+      tokenAllocation: BigNumberish,
+      expiredBlockNumber: BigNumberish,
+      signature: BytesLike
+    ],
+    [bigint],
+    "nonpayable"
+  >;
+
+  whitelistBuyExactOut: TypedContractMethod<
+    [
+      amountOut: BigNumberish,
+      maximumPay: BigNumberish,
+      isBuyToken: boolean,
+      recipient: AddressLike,
+      id: BigNumberish,
+      tokenAllocation: BigNumberish,
+      expiredBlockNumber: BigNumberish,
+      signature: BytesLike
+    ],
+    [bigint],
+    "nonpayable"
+  >;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -715,8 +843,17 @@ export interface MemeA8 extends BaseContract {
     nameOrSignature: "UNIV2_FACTORY"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "WETH"
-  ): TypedContractMethod<[], [string], "view">;
+    nameOrSignature: "_swapExactOut"
+  ): TypedContractMethod<
+    [
+      amountOut: BigNumberish,
+      maximumPay: BigNumberish,
+      isBuyToken: boolean,
+      recipient: AddressLike
+    ],
+    [bigint],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "allowance"
   ): TypedContractMethod<
@@ -765,10 +902,20 @@ export interface MemeA8 extends BaseContract {
     nameOrSignature: "factory"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
+    nameOrSignature: "idUsed"
+  ): TypedContractMethod<[arg0: BigNumberish], [boolean], "view">;
+  getFunction(
     nameOrSignature: "increaseAllowance"
   ): TypedContractMethod<
     [spender: AddressLike, addedValue: BigNumberish],
     [boolean],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "initialBuy"
+  ): TypedContractMethod<
+    [amountIn: BigNumberish, recipient: AddressLike],
+    [bigint],
     "nonpayable"
   >;
   getFunction(
@@ -779,11 +926,12 @@ export interface MemeA8 extends BaseContract {
       _symbol: string,
       _creator: AddressLike,
       _univ2Factory: AddressLike,
-      _weth: AddressLike,
+      _native: AddressLike,
       _totalSupply: BigNumberish,
       _saleAmount: BigNumberish,
       _tokenOffset: BigNumberish,
-      _nativeOffset: BigNumberish
+      _nativeOffset: BigNumberish,
+      _whitelistEndTs: BigNumberish
     ],
     [void],
     "nonpayable"
@@ -797,6 +945,9 @@ export interface MemeA8 extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "name"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "native"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "nativeOffset"
@@ -844,6 +995,9 @@ export interface MemeA8 extends BaseContract {
     nameOrSignature: "saleAmount"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
+    nameOrSignature: "signerAddress"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[_interfaceId: BytesLike], [boolean], "view">;
   getFunction(
@@ -856,7 +1010,7 @@ export interface MemeA8 extends BaseContract {
       recipient: AddressLike
     ],
     [bigint],
-    "payable"
+    "nonpayable"
   >;
   getFunction(
     nameOrSignature: "swapExactOut"
@@ -868,7 +1022,7 @@ export interface MemeA8 extends BaseContract {
       recipient: AddressLike
     ],
     [bigint],
-    "payable"
+    "nonpayable"
   >;
   getFunction(
     nameOrSignature: "symbol"
@@ -903,8 +1057,37 @@ export interface MemeA8 extends BaseContract {
     nameOrSignature: "version"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "withdraw"
-  ): TypedContractMethod<[], [void], "nonpayable">;
+    nameOrSignature: "whitelistBuyExactIn"
+  ): TypedContractMethod<
+    [
+      amountIn: BigNumberish,
+      minimumReceive: BigNumberish,
+      isBuyToken: boolean,
+      recipient: AddressLike,
+      id: BigNumberish,
+      tokenAllocation: BigNumberish,
+      expiredBlockNumber: BigNumberish,
+      signature: BytesLike
+    ],
+    [bigint],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "whitelistBuyExactOut"
+  ): TypedContractMethod<
+    [
+      amountOut: BigNumberish,
+      maximumPay: BigNumberish,
+      isBuyToken: boolean,
+      recipient: AddressLike,
+      id: BigNumberish,
+      tokenAllocation: BigNumberish,
+      expiredBlockNumber: BigNumberish,
+      signature: BytesLike
+    ],
+    [bigint],
+    "nonpayable"
+  >;
 
   getEvent(
     key: "Approval"
@@ -968,6 +1151,13 @@ export interface MemeA8 extends BaseContract {
     TransferEvent.InputTuple,
     TransferEvent.OutputTuple,
     TransferEvent.OutputObject
+  >;
+  getEvent(
+    key: "WhitelistBuy"
+  ): TypedContractEvent<
+    WhitelistBuyEvent.InputTuple,
+    WhitelistBuyEvent.OutputTuple,
+    WhitelistBuyEvent.OutputObject
   >;
 
   filters: {
@@ -1068,6 +1258,17 @@ export interface MemeA8 extends BaseContract {
       TransferEvent.InputTuple,
       TransferEvent.OutputTuple,
       TransferEvent.OutputObject
+    >;
+
+    "WhitelistBuy(uint256,uint256)": TypedContractEvent<
+      WhitelistBuyEvent.InputTuple,
+      WhitelistBuyEvent.OutputTuple,
+      WhitelistBuyEvent.OutputObject
+    >;
+    WhitelistBuy: TypedContractEvent<
+      WhitelistBuyEvent.InputTuple,
+      WhitelistBuyEvent.OutputTuple,
+      WhitelistBuyEvent.OutputObject
     >;
   };
 }

@@ -7,11 +7,6 @@ import type { MemeA8, MemeA8Interface } from "../MemeA8";
 
 const _abi = [
   {
-    type: "constructor",
-    inputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
     type: "function",
     name: "BASIS_POINTS",
     inputs: [],
@@ -52,16 +47,37 @@ const _abi = [
   },
   {
     type: "function",
-    name: "WETH",
-    inputs: [],
+    name: "_swapExactOut",
+    inputs: [
+      {
+        name: "amountOut",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "maximumPay",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "isBuyToken",
+        type: "bool",
+        internalType: "bool",
+      },
+      {
+        name: "recipient",
+        type: "address",
+        internalType: "address",
+      },
+    ],
     outputs: [
       {
         name: "",
-        type: "address",
-        internalType: "contract IWETH",
+        type: "uint256",
+        internalType: "uint256",
       },
     ],
-    stateMutability: "view",
+    stateMutability: "nonpayable",
   },
   {
     type: "function",
@@ -231,6 +247,25 @@ const _abi = [
   },
   {
     type: "function",
+    name: "idUsed",
+    inputs: [
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+        internalType: "bool",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "increaseAllowance",
     inputs: [
       {
@@ -249,6 +284,30 @@ const _abi = [
         name: "",
         type: "bool",
         internalType: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "initialBuy",
+    inputs: [
+      {
+        name: "amountIn",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "recipient",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
       },
     ],
     stateMutability: "nonpayable",
@@ -278,7 +337,7 @@ const _abi = [
         internalType: "address",
       },
       {
-        name: "_weth",
+        name: "_native",
         type: "address",
         internalType: "address",
       },
@@ -299,6 +358,11 @@ const _abi = [
       },
       {
         name: "_nativeOffset",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "_whitelistEndTs",
         type: "uint256",
         internalType: "uint256",
       },
@@ -333,6 +397,19 @@ const _abi = [
         name: "",
         type: "string",
         internalType: "string",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "native",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "contract IERC20",
       },
     ],
     stateMutability: "view",
@@ -484,6 +561,19 @@ const _abi = [
   },
   {
     type: "function",
+    name: "signerAddress",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "supportsInterface",
     inputs: [
       {
@@ -533,7 +623,7 @@ const _abi = [
         internalType: "uint256",
       },
     ],
-    stateMutability: "payable",
+    stateMutability: "nonpayable",
   },
   {
     type: "function",
@@ -567,7 +657,7 @@ const _abi = [
         internalType: "uint256",
       },
     ],
-    stateMutability: "payable",
+    stateMutability: "nonpayable",
   },
   {
     type: "function",
@@ -702,9 +792,110 @@ const _abi = [
   },
   {
     type: "function",
-    name: "withdraw",
-    inputs: [],
-    outputs: [],
+    name: "whitelistBuyExactIn",
+    inputs: [
+      {
+        name: "amountIn",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "minimumReceive",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "isBuyToken",
+        type: "bool",
+        internalType: "bool",
+      },
+      {
+        name: "recipient",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "id",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "tokenAllocation",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "expiredBlockNumber",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "signature",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    outputs: [
+      {
+        name: "amountToken",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "whitelistBuyExactOut",
+    inputs: [
+      {
+        name: "amountOut",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "maximumPay",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "isBuyToken",
+        type: "bool",
+        internalType: "bool",
+      },
+      {
+        name: "recipient",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "id",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "tokenAllocation",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "expiredBlockNumber",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "signature",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    outputs: [
+      {
+        name: "amountIn",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
     stateMutability: "nonpayable",
   },
   {
@@ -931,6 +1122,25 @@ const _abi = [
       },
       {
         name: "value",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "WhitelistBuy",
+    inputs: [
+      {
+        name: "id",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "amountBought",
         type: "uint256",
         indexed: false,
         internalType: "uint256",
